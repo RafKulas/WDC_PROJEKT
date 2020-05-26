@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/WDC_PROJEKT.iml" filepath="$PROJECT_DIR$/WDC_PROJEKT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wdc_proj.iml" filepath="$PROJECT_DIR$/wdc_proj.iml" />
     </modules>
   </component>
 </project>
