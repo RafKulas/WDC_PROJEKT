@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pg.eti.inf.wdc.project.Controller">
+   <VBox prefHeight="200.0" prefWidth="250.0" alignment="BASELINE_CENTER" style="-fx-alignment: center; -fx-spacing: 10;">
+
+      <Button fx:id="coding" text="Szyfrowanie/Deszyfrowanie" />
+      <Button fx:id="teaching" text="Tryb edukacyjny" onAction="#educationalMode" />
+      <Button fx:id="exit" text="Wyjście" onAction="#exitApp"/>
+
+   </VBox>
+</GridPane>
