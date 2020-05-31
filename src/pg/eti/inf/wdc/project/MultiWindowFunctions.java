@@ -5,9 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.io.File;
 import java.io.IOException;
 
 public class MultiWindowFunctions {
@@ -25,5 +27,19 @@ public class MultiWindowFunctions {
         {
             e.printStackTrace();
         }
+    }
+
+    protected static String getFileExtention(File file) {
+        String name = file.getName();
+        return name.substring(name.lastIndexOf('.'), name.length());
+    }
+
+    protected static void showAlert(String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Something went wrong...");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+
+        alert.showAndWait();
     }
 }
