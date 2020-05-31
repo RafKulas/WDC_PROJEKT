@@ -3,9 +3,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pg.eti.inf.wdc.project.Controller">
    <VBox prefHeight="200.0" prefWidth="250.0" alignment="BASELINE_CENTER" style="-fx-alignment: center; -fx-spacing: 10;">
-
+      <ChoiceBox value="2 minutes">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="2 minutes" />
+               <String fx:value="5 minutes" />
+               <String fx:value="15 minutes" />
+            </FXCollections>
+         </items>
+      </ChoiceBox>
       <Button fx:id="coding" text="Szyfrowanie/Deszyfrowanie" />
       <Button fx:id="teaching" text="Tryb edukacyjny" />
       <Button fx:id="exit" text="Wyjście" onAction="#exitApp"/>
