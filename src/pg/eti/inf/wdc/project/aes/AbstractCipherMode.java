@@ -1,4 +1,4 @@
-package pg.eti.inf.wdc.project;
+package pg.eti.inf.wdc.project.aes;
 
 public interface AbstractCipherMode
 {

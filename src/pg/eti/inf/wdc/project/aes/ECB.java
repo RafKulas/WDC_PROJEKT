@@ -1,6 +1,6 @@
-package pg.eti.inf.wdc.project;
+package pg.eti.inf.wdc.project.aes;
 
-import pg.eti.inf.wdc.project.AbstractCipherMode;
+import pg.eti.inf.wdc.project.aes.AbstractCipherMode;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;

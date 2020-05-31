@@ -1,4 +1,4 @@
-package pg.eti.inf.wdc.project;
+package pg.eti.inf.wdc.project.aes;
 
 import java.io.File;
 import java.io.FileInputStream;
