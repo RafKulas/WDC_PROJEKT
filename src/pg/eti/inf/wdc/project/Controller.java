@@ -9,8 +9,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.io.IOException;
+
+import static pg.eti.inf.wdc.project.MultiWindowFunctions.createNewWindow;
 
 public class Controller {
 
@@ -24,9 +27,6 @@ public class Controller {
     }
 
     public void swap(ActionEvent actionEvent) throws IOException {
-        Parent home_page = FXMLLoader.load(getClass().getResource("encoding_window.fxml"));
-        Stage app = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
-        app.setScene(new Scene(home_page, 600, 500));
-        app.show();
+        createNewWindow(this, actionEvent, "encoding_window.fxml", new Pair<>(600, 400));
     }
 }

@@ -6,14 +6,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.io.IOException;
 
+import static pg.eti.inf.wdc.project.MultiWindowFunctions.createNewWindow;
+
 public class EncodingWindow {
     public void swap(ActionEvent actionEvent) throws IOException {
-        Parent home_page = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        Stage app = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
-        app.setScene(new Scene(home_page, 600, 500));
-        app.show();
+        createNewWindow(this, actionEvent, "sample.fxml", new Pair<>(300, 275));
     }
 }
