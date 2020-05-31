@@ -17,7 +17,7 @@
 <!--            </FXCollections>-->
 <!--         </items>-->
 <!--      </ChoiceBox>-->
-      <Button fx:id="coding" text="Szyfrowanie/Deszyfrowanie" />
+      <Button fx:id="coding" text="Szyfrowanie/Deszyfrowanie" onAction="#swap"/>
       <Button fx:id="teaching" text="Tryb edukacyjny" />
       <Button fx:id="exit" text="Wyjście" onAction="#exitApp"/>
 
