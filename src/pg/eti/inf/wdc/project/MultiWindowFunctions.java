@@ -25,13 +25,13 @@ public class MultiWindowFunctions {
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            MultiWindowFunctions.showAlert("Opening window went wrong!", "Looks like source file was deleted...");
         }
     }
 
-    protected static String getFileExtention(File file) {
+    protected static String getFileExtension(File file) {
         String name = file.getName();
-        return name.substring(name.lastIndexOf('.'), name.length());
+        return name.substring(name.lastIndexOf('.'));
     }
 
     protected static void showAlert(String header, String content) {
@@ -41,5 +41,14 @@ public class MultiWindowFunctions {
         alert.setContentText(content);
 
         alert.showAndWait();
+    }
+
+    protected static boolean checkIfText(String extension) {
+        return extension.equals(".txt");
+    }
+
+    protected static boolean checkIfImage(String extension) {
+        return  extension.equals(".png") || extension.equals(".jpg") ||
+                extension.equals(".jpeg");
     }
 }

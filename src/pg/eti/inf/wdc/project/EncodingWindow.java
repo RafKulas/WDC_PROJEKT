@@ -1,53 +1,52 @@
 package pg.eti.inf.wdc.project;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.util.Pair;
 
 import java.io.*;
-import java.util.Arrays;
-
-import pg.eti.inf.wdc.project.MultiWindowFunctions.*;
 
 public class EncodingWindow {
-    public Button chooser;
+    public Button fileChooser;
     public ImageView image;
     public TextArea text;
-    public ChoiceBox todo;
-    public Label info;
+    public Label fileInfo;
     public Button doAction;
+    public Button pathChooser;
+    public Label pathInfo;
     private File toCrypt; // file to encrypt or decrypt
+    private File destination;
 
-    public void swap(ActionEvent actionEvent) throws IOException {
+    public void swap(ActionEvent actionEvent) {
         MultiWindowFunctions.createNewWindow(this, actionEvent, "sample.fxml", new Pair<>(300, 275));
     }
 
-    public void chooseFile(ActionEvent actionEvent) {
+    public void chooseFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Text Files", "*.txt"),
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg"),
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
-            info.setText(selectedFile.getName());
+            fileInfo.setText(selectedFile.getName());
             doAction.setDisable(false);
             toCrypt = selectedFile;
         }
     }
 
-    public void coding(ActionEvent actionEvent) {
-        String extension = MultiWindowFunctions.getFileExtention(toCrypt);
-        if (extension.equals(".txt")) {
+    /**
+     * TODO encrypting or decrypting file then view
+     */
+    public void coding() {
+        String extension = MultiWindowFunctions.getFileExtension(toCrypt);
+        if (MultiWindowFunctions.checkIfText(extension)) {
+
             try {
                 FileReader fileReader = new FileReader(toCrypt);
                 char[] buffer = new char[80];
@@ -56,11 +55,39 @@ public class EncodingWindow {
                     text.appendText(String.valueOf(buffer).substring(0, read));
                 }
                 text.setVisible(true);
+                image.setVisible(false);
             } catch (FileNotFoundException e) {
                 MultiWindowFunctions.showAlert("FILE NOT FOUND!", "Looks like file does not exist or was deleted...");
             } catch (IOException e) {
                 MultiWindowFunctions.showAlert("Problem with reading file!", "File is corrupted...");
             }
+        }
+        else if (MultiWindowFunctions.checkIfImage(extension)) {
+            try {
+                Image imageToView = new Image(toCrypt.toURI().toURL().toExternalForm());
+                image.setImage(imageToView);
+                image.setFitHeight(200.0);
+                image.setFitWidth(500.0);
+                image.setVisible(true);
+                text.setVisible(false);
+            } catch (IOException e) {
+                MultiWindowFunctions.showAlert("Problem with reading file!", "File is corrupted...");
+            }
+        }
+        else {
+            image.setVisible(false);
+            text.setVisible(false);
+            System.out.println("Gonna implement it later");
+        }
+    }
+
+    public void choosePath() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDir = directoryChooser.showDialog(null);
+        if (selectedDir != null) {
+            pathInfo.setText(selectedDir.getName());
+            doAction.setDisable(false);
+            destination = selectedDir;
         }
     }
 }
