@@ -99,7 +99,7 @@ public class EncodingWindow {
 //            showInitializationVector = true;
 //            aes = new AES(new CTR(), "./path");
 //        }
-        String fileDir = destination + "\\decrypted" + MultiWindowFunctions.getFileExtension(toCrypt);
+        String fileDir = destination + "/encrypted" + MultiWindowFunctions.getFileExtension(toCrypt);
         System.out.println(fileDir);
         aes.encrypt(toCrypt);
         showFile(new File(fileDir));

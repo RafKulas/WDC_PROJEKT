@@ -8,22 +8,22 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
-public class ECB implements AbstractCipherMode
+public class CTR implements AbstractCipherMode
 {
 
     String padding_;
 
-    public ECB()
+    public CTR()
     {
-        this.padding_ = "AES/ECB/PKCS5Padding";
+        this.padding_ = "AES/CTR/PKCS5Padding";
     }
 
-    public ECB(boolean padding)
+    public CTR(boolean padding)
     {
         if(padding)
-            this.padding_ = "AES/ECB/PKCS5Padding";
+            this.padding_ = "AES/CTR/PKCS5Padding";
         else
-            this.padding_ = "AES/ECB/NoPadding";
+            this.padding_ = "AES/CTR/NoPadding";
     }
 
     @Override
@@ -32,15 +32,22 @@ public class ECB implements AbstractCipherMode
         byte data_array[][] = new byte[2][];
         try
         {
+            byte[] iv = new byte[128/8];
+            SecureRandom random = new SecureRandom();
+            random.nextBytes(iv);
+            IvParameterSpec ivspec = new IvParameterSpec(iv);
+
             KeyGenerator key_generator = KeyGenerator.getInstance("AES");
             SecretKey secret_key = key_generator.generateKey();
 
             Cipher cipher = Cipher.getInstance(padding_);
-            cipher.init(Cipher.ENCRYPT_MODE, secret_key);
+            cipher.init(Cipher.ENCRYPT_MODE, secret_key, ivspec);
 
             byte[] encoded = cipher.doFinal(data);
             data_array[0] = secret_key.getEncoded();
-            data_array[1] = encoded;
+            data_array[1] = new byte[iv.length + encoded.length];
+            System.arraycopy(iv, 0, data_array[1], 0, iv.length);
+            System.arraycopy(encoded, 0, data_array[1], iv.length, encoded.length);
         } catch(Exception ex){System.out.println(ex);}
 
         return data_array;
@@ -52,10 +59,16 @@ public class ECB implements AbstractCipherMode
         byte encrypted[] = null;
         try
         {
-            //vector is not used in this mode it's here becasue of some magic somewhere else
             byte[] iv = new byte[128/8];
-            SecureRandom random = new SecureRandom();
-            random.nextBytes(iv);
+            if(vector == null)
+            {
+                SecureRandom random = new SecureRandom();
+                random.nextBytes(iv);
+            }
+            else
+            {
+                iv = vector;
+            }
             IvParameterSpec ivspec = new IvParameterSpec(iv);
 
             if(key.length != 16 && key.length != 24 && key.length != 32)
@@ -63,7 +76,7 @@ public class ECB implements AbstractCipherMode
             SecretKey secret_key = new SecretKeySpec(key,"AES");
 
             Cipher cipher = Cipher.getInstance(padding_);
-            cipher.init(Cipher.ENCRYPT_MODE, secret_key);
+            cipher.init(Cipher.ENCRYPT_MODE, secret_key, ivspec);
 
             byte[] encoded = cipher.doFinal(data);
             encrypted = new byte[iv.length + encoded.length];
@@ -80,13 +93,16 @@ public class ECB implements AbstractCipherMode
         byte decrypted[] = null;
         try
         {
+            byte[] iv = Arrays.copyOfRange(data, 0,16);
+            IvParameterSpec ivspec = new IvParameterSpec(iv);
+
             if(key.length != 16 && key.length != 24 && key.length != 32)
                 key = Arrays.copyOf(key, 32);
             SecretKey secret_key = new SecretKeySpec(key, "AES");
             Cipher cipher = Cipher.getInstance(padding_);
-            cipher.init(Cipher.DECRYPT_MODE, secret_key);
+            cipher.init(Cipher.DECRYPT_MODE, secret_key, ivspec);
 
-            byte[] encoded = cipher.doFinal(data);
+            byte[] encoded = cipher.doFinal(Arrays.copyOfRange(data, 16,data.length));
             decrypted = encoded;
         } catch(Exception ex){System.out.println(ex);}
 
