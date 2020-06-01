@@ -8,7 +8,7 @@ public class AES implements IAES
 {
     private AbstractCipherMode cipher_mode_;
     private String path_;
-    private final String slash;
+    public final String slash;
 
     public AES(AbstractCipherMode cipher_mode, String path)
     {

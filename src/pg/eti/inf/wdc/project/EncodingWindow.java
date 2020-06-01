@@ -7,8 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
-import pg.eti.inf.wdc.project.aes.AES;
-import pg.eti.inf.wdc.project.aes.ECB;
+import pg.eti.inf.wdc.project.aes.*;
 
 import java.io.*;
 
@@ -44,6 +43,8 @@ public class EncodingWindow {
 
     //AES
     private AES aes;
+
+    public ChoiceBox todo;
 
     public void swap(ActionEvent actionEvent) {
         MultiWindowFunctions.createNewWindow(this, actionEvent, "sample.fxml", new Pair<>(300, 275));
@@ -89,20 +90,41 @@ public class EncodingWindow {
             aes = new AES(new ECB(),"");
             aes.SetPath(destination.getAbsolutePath());
         }
-//        else if(choice.equals("CBC"))
-//        {
-//            showInitializationVector = true;
-//            aes = new AES(new CBC(), "./path");
-//        }
-//        else if(choice.equals("CTR"))
-//        {
-//            showInitializationVector = true;
-//            aes = new AES(new CTR(), "./path");
-//        }
-        String fileDir = destination + "/encrypted" + MultiWindowFunctions.getFileExtension(toCrypt);
-        System.out.println(fileDir);
-        aes.encrypt(toCrypt);
+        else if(choice.equals("CBC"))
+        {
+            aes = new AES(new CBC(), "");
+            aes.SetPath(destination.getAbsolutePath());
+        }
+        else if(choice.equals("CTR"))
+        {
+            aes = new AES(new CTR(), "");
+            aes.SetPath(destination.getAbsolutePath());
+        }
+        String fileDir;
+        if (todo.getValue().equals("Szyfrowanie")) {
+            fileDir = destination + aes.slash + "encrypted" + MultiWindowFunctions.getFileExtension(toCrypt);
+            System.out.println(fileDir);
+            aes.encrypt(toCrypt);
+        }
+        else {
+            fileDir = destination + aes.slash + "decrypted" + MultiWindowFunctions.getFileExtension(toCrypt);
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Wybierz klucz do odszyfrowania");
+            fc.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Klucze (*.txt)", "*.txt"));
+            File selectedFile = fc.showOpenDialog(null);
+            File key;
+            if (selectedFile != null) {
+                key = selectedFile;
+            }
+            else {
+                MultiWindowFunctions.showAlert("KEY NOT SELECTED!", "");
+                return;
+            }
+            aes.decrypt(toCrypt, key);
+        }
         showFile(new File(fileDir));
+
     }
 
     private void showFile(File f) {
@@ -110,6 +132,7 @@ public class EncodingWindow {
         if (MultiWindowFunctions.checkIfText(extension)) {
 
             try {
+                text.setText("");
                 FileReader fileReader = new FileReader(f);
                 char[] buffer = new char[80];
                 int read;
