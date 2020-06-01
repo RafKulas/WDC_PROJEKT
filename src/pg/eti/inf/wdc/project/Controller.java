@@ -19,7 +19,13 @@ public class Controller {
         Platform.exit();
     }
 
+    @FXML
     public void swap(ActionEvent actionEvent) {
         createNewWindow(this, actionEvent, "encoding_window.fxml", new Pair<>(600, 400));
+    }
+
+    @FXML
+    protected void educationalMode(ActionEvent event) {
+        createNewWindow(this, event, "EducationalMode.fxml", new Pair<>(600,400));
     }
 }

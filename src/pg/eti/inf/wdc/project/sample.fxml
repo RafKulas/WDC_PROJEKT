@@ -11,7 +11,7 @@
           fx:controller="pg.eti.inf.wdc.project.Controller">
    <VBox prefHeight="200.0" prefWidth="250.0" alignment="BASELINE_CENTER" style="-fx-alignment: center; -fx-spacing: 10;">
       <Button fx:id="coding" text="Szyfrowanie/Deszyfrowanie" onAction="#swap"/>
-      <Button fx:id="teaching" text="Tryb edukacyjny" />
+      <Button fx:id="teaching" text="Tryb edukacyjny" onAction="#educationalMode" />
       <Button fx:id="exit" text="Wyjście" onAction="#exitApp"/>
    </VBox>
 </GridPane>
