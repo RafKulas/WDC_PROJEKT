@@ -22,10 +22,10 @@ public class ECB implements AbstractCipherMode
         byte[][] data_array = new byte[2][];
         try
         {
-            KeyGenerator key_generator = KeyGenerator.getInstance("pg.eti.inf.wdc.project.aes.AES");
+            KeyGenerator key_generator = KeyGenerator.getInstance("AES");
             SecretKey secret_key = key_generator.generateKey();
 
-            Cipher cipher = Cipher.getInstance("pg.eti.inf.wdc.project.aes.AES/pg.eti.inf.wdc.project.aes.ECB/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, secret_key);
 
             byte[] encoded = cipher.doFinal(data);
@@ -44,9 +44,9 @@ public class ECB implements AbstractCipherMode
         {
             if(key.length != 16 && key.length != 24 && key.length != 32)
                 key = Arrays.copyOf(key, 32);
-            SecretKey secret_key = new SecretKeySpec(key,"pg.eti.inf.wdc.project.aes.AES");
+            SecretKey secret_key = new SecretKeySpec(key,"AES");
 
-            Cipher cipher = Cipher.getInstance("pg.eti.inf.wdc.project.aes.AES/pg.eti.inf.wdc.project.aes.ECB/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, secret_key);
 
             byte[] encoded = cipher.doFinal(data);
@@ -64,8 +64,8 @@ public class ECB implements AbstractCipherMode
         {
             if(key.length != 16 && key.length != 24 && key.length != 32)
                 key = Arrays.copyOf(key, 32);
-            SecretKey secret_key = new SecretKeySpec(key, "pg.eti.inf.wdc.project.aes.AES");
-            Cipher cipher = Cipher.getInstance("pg.eti.inf.wdc.project.aes.AES/pg.eti.inf.wdc.project.aes.ECB/PKCS5Padding");
+            SecretKey secret_key = new SecretKeySpec(key, "AES");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, secret_key);
 
             byte[] encoded = cipher.doFinal(data);
