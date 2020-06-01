@@ -29,7 +29,7 @@ public class CTR implements AbstractCipherMode
     @Override
     public byte[][] encrypt(byte[] data)
     {
-        byte data_array[][] = new byte[2][];
+        byte[][] data_array = new byte[2][];
         try
         {
             byte[] iv = new byte[128/8];
@@ -56,7 +56,7 @@ public class CTR implements AbstractCipherMode
     @Override
     public byte[] encrypt(byte[] data, byte[] key, byte[] vector)
     {
-        byte encrypted[] = null;
+        byte[] encrypted = null;
         try
         {
             byte[] iv = new byte[128/8];
@@ -90,7 +90,7 @@ public class CTR implements AbstractCipherMode
     @Override
     public byte[] decrypt(byte[] data, byte[] key)
     {
-        byte decrypted[] = null;
+        byte[] decrypted = null;
         try
         {
             byte[] iv = Arrays.copyOfRange(data, 0,16);
@@ -102,8 +102,7 @@ public class CTR implements AbstractCipherMode
             Cipher cipher = Cipher.getInstance(padding_);
             cipher.init(Cipher.DECRYPT_MODE, secret_key, ivspec);
 
-            byte[] encoded = cipher.doFinal(Arrays.copyOfRange(data, 16,data.length));
-            decrypted = encoded;
+            decrypted = cipher.doFinal(Arrays.copyOfRange(data, 16,data.length));
         } catch(Exception ex){System.out.println(ex);}
 
         return decrypted;
