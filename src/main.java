@@ -7,12 +7,12 @@ public class main
     public static void main(String[] args) throws Exception
     {
         String path = "C:\\Users\\janja\\Desktop";
-        AES aes = new AES(new CTR(),path);
+        AES aes = new AES(new CBC(),path);
 
-        aes.encrypt(new File(path + "\\1234.png"));
-        aes.decrypt(new File(path + "\\encrypted.png"),new File(path + "\\key.txt"));
+        //aes.encrypt(new File(path + "\\1234.png"));
+        //aes.decrypt(new File(path + "\\encrypted.txt"),new File(path + "\\key.txt"));
 
-        aes.encrypt("qwertyxd");
+        aes.encrypt("xd");
         String text = new String(Files.readAllBytes(Paths.get("C:\\Users\\janja\\Desktop\\encrypted.txt")),"ISO-8859-1");
         aes.decrypt(text, new File(path + "\\key.txt"));
 

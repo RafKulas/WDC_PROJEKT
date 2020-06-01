@@ -9,9 +9,19 @@ import java.util.Arrays;
 public class CTR implements AbstractCipherMode
 {
 
-    public void CTR()
-    {
+    String padding_;
 
+    public CTR()
+    {
+        this.padding_ = "AES/CTR/PKCS5Padding";
+    }
+
+    public CTR(boolean padding)
+    {
+        if(padding)
+            this.padding_ = "AES/CTR/PKCS5Padding";
+        else
+            this.padding_ = "AES/CTR/NoPadding";
     }
 
     @Override
@@ -28,7 +38,7 @@ public class CTR implements AbstractCipherMode
             KeyGenerator key_generator = KeyGenerator.getInstance("AES");
             SecretKey secret_key = key_generator.generateKey();
 
-            Cipher cipher = Cipher.getInstance("AES/CTR/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance(padding_);
             cipher.init(Cipher.ENCRYPT_MODE, secret_key, ivspec);
 
             byte[] encoded = cipher.doFinal(data);
@@ -42,21 +52,28 @@ public class CTR implements AbstractCipherMode
     }
 
     @Override
-    public byte[] encrypt(byte[] data, byte[] key)
+    public byte[] encrypt(byte[] data, byte[] key, byte[] vector)
     {
         byte encrypted[] = null;
         try
         {
             byte[] iv = new byte[128/8];
-            SecureRandom random = new SecureRandom();
-            random.nextBytes(iv);
+            if(vector == null)
+            {
+                SecureRandom random = new SecureRandom();
+                random.nextBytes(iv);
+            }
+            else
+            {
+                iv = vector;
+            }
             IvParameterSpec ivspec = new IvParameterSpec(iv);
 
             if(key.length != 16 && key.length != 24 && key.length != 32)
                 key = Arrays.copyOf(key, 32);
             SecretKey secret_key = new SecretKeySpec(key,"AES");
 
-            Cipher cipher = Cipher.getInstance("AES/CTR/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance(padding_);
             cipher.init(Cipher.ENCRYPT_MODE, secret_key, ivspec);
 
             byte[] encoded = cipher.doFinal(data);
@@ -80,7 +97,7 @@ public class CTR implements AbstractCipherMode
             if(key.length != 16 && key.length != 24 && key.length != 32)
                 key = Arrays.copyOf(key, 32);
             SecretKey secret_key = new SecretKeySpec(key, "AES");
-            Cipher cipher = Cipher.getInstance("AES/CTR/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance(padding_);
             cipher.init(Cipher.DECRYPT_MODE, secret_key, ivspec);
 
             byte[] encoded = cipher.doFinal(Arrays.copyOfRange(data, 16,data.length));
