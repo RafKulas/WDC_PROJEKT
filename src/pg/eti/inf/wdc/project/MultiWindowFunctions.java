@@ -34,7 +34,7 @@ public class MultiWindowFunctions {
         return name.substring(name.lastIndexOf('.'));
     }
 
-    protected static void showAlert(String header, String content) {
+    public static void showAlert(String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Something went wrong...");
         alert.setHeaderText(header);
@@ -47,8 +47,4 @@ public class MultiWindowFunctions {
         return extension.equals(".txt");
     }
 
-    protected static boolean checkIfImage(String extension) {
-        return  extension.equals(".png") || extension.equals(".jpg") ||
-                extension.equals(".jpeg");
-    }
 }

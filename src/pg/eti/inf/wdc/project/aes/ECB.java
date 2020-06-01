@@ -1,5 +1,7 @@
 package pg.eti.inf.wdc.project.aes;
 
+import pg.eti.inf.wdc.project.MultiWindowFunctions;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -29,7 +31,7 @@ public class ECB implements AbstractCipherMode
     @Override
     public byte[][] encrypt(byte[] data)
     {
-        byte data_array[][] = new byte[2][];
+        byte[][] data_array = new byte[2][];
         try
         {
             KeyGenerator key_generator = KeyGenerator.getInstance("AES");
@@ -41,7 +43,9 @@ public class ECB implements AbstractCipherMode
             byte[] encoded = cipher.doFinal(data);
             data_array[0] = secret_key.getEncoded();
             data_array[1] = encoded;
-        } catch(Exception ex){System.out.println(ex);}
+        } catch(Exception ex) {
+            MultiWindowFunctions.showAlert("Something went wrong...", ex.toString());
+        }
 
         return data_array;
     }
@@ -49,7 +53,7 @@ public class ECB implements AbstractCipherMode
     @Override
     public byte[] encrypt(byte[] data, byte[] key, byte[] vector)
     {
-        byte encrypted[] = null;
+        byte[] encrypted = null;
         try
         {
             //vector is not used in this mode it's here becasue of some magic somewhere else
@@ -69,7 +73,9 @@ public class ECB implements AbstractCipherMode
             encrypted = new byte[iv.length + encoded.length];
             System.arraycopy(iv, 0, encrypted, 0, iv.length);
             System.arraycopy(encoded, 0, encrypted, iv.length, encoded.length);
-        } catch(Exception ex){System.out.println(ex);}
+        } catch(Exception ex) {
+            MultiWindowFunctions.showAlert("Something went wrong...", ex.toString());
+        }
 
         return encrypted;
     }
@@ -77,7 +83,7 @@ public class ECB implements AbstractCipherMode
     @Override
     public byte[] decrypt(byte[] data, byte[] key)
     {
-        byte decrypted[] = null;
+        byte[] decrypted = null;
         try
         {
             if(key.length != 16 && key.length != 24 && key.length != 32)
@@ -85,10 +91,10 @@ public class ECB implements AbstractCipherMode
             SecretKey secret_key = new SecretKeySpec(key, "AES");
             Cipher cipher = Cipher.getInstance(padding_);
             cipher.init(Cipher.DECRYPT_MODE, secret_key);
-
-            byte[] encoded = cipher.doFinal(data);
-            decrypted = encoded;
-        } catch(Exception ex){System.out.println(ex);}
+            decrypted = cipher.doFinal(data);
+        } catch(Exception ex) {
+            MultiWindowFunctions.showAlert("Something went wrong...", ex.toString());
+        }
 
         return decrypted;
     }

@@ -1,5 +1,7 @@
 package pg.eti.inf.wdc.project.aes;
 
+import pg.eti.inf.wdc.project.MultiWindowFunctions;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -48,7 +50,9 @@ public class CBC implements AbstractCipherMode
             data_array[1] = new byte[iv.length + encoded.length];
             System.arraycopy(iv, 0, data_array[1], 0, iv.length);
             System.arraycopy(encoded, 0, data_array[1], iv.length, encoded.length);
-        } catch(Exception ex){System.out.println(ex);}
+        } catch(Exception ex) {
+            MultiWindowFunctions.showAlert("Something went wrong...", ex.toString());
+        }
 
         return data_array;
     }
@@ -82,7 +86,9 @@ public class CBC implements AbstractCipherMode
             encrypted = new byte[iv.length + encoded.length];
             System.arraycopy(iv, 0, encrypted, 0, iv.length);
             System.arraycopy(encoded, 0, encrypted, iv.length, encoded.length);
-        } catch(Exception ex){System.out.println(ex);}
+        } catch(Exception ex) {
+            MultiWindowFunctions.showAlert("Something went wrong...", ex.toString());
+        }
 
         return encrypted;
     }
@@ -99,12 +105,15 @@ public class CBC implements AbstractCipherMode
             if(key.length != 16 && key.length != 24 && key.length != 32)
                 key = Arrays.copyOf(key, 32);
             SecretKey secret_key = new SecretKeySpec(key, "AES");
+
             Cipher cipher = Cipher.getInstance(padding_);
             cipher.init(Cipher.DECRYPT_MODE, secret_key, ivspec);
 
             byte[] encoded = cipher.doFinal(Arrays.copyOfRange(data, 16,data.length));
             decrypted = encoded;
-        } catch(Exception ex){System.out.println(ex);}
+        } catch(Exception ex) {
+            MultiWindowFunctions.showAlert("Something went wrong...", ex.toString());
+        }
 
         return decrypted;
     }

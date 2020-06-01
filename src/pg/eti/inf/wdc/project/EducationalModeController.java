@@ -1,29 +1,21 @@
 package pg.eti.inf.wdc.project;
 
-import static java.nio.charset.StandardCharsets.*;
 import static pg.eti.inf.wdc.project.MultiWindowFunctions.createNewWindow;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import javafx.stage.Stage;
 import javafx.util.Pair;
 import pg.eti.inf.wdc.project.aes.*;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+//import java.io.IOException;
+//import java.nio.charset.Charset;
+//import java.nio.file.Files;
+//import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -85,31 +77,30 @@ public class EducationalModeController
     }
 
     @FXML
-    protected void confirmModeChoiceAction(ActionEvent event)
+    protected void confirmModeChoiceAction()
     {
         RadioButton selectedRadioButton = (RadioButton) cipherModesGroup.getSelectedToggle();
         String choice = selectedRadioButton.getText();
-        if(choice.equals("ECB"))
-        {
-            showInitializationVector = false;
-            aes = new ECB(false);
-        }
-        else if(choice.equals("CBC"))
-        {
-            showInitializationVector = true;
-            aes = new CBC(false);
-        }
-        else if(choice.equals("CTR"))
-        {
-            showInitializationVector = true;
-            aes = new CTR(false);
+        switch (choice) {
+            case "ECB":
+                showInitializationVector = false;
+                aes = new ECB(false);
+                break;
+            case "CBC":
+                showInitializationVector = true;
+                aes = new CBC(false);
+                break;
+            case "CTR":
+                showInitializationVector = true;
+                aes = new CTR(false);
+                break;
         }
         disableChoosingMode();
         showEncryption();
     }
 
     @FXML
-    protected void confirmEncryptionAction(ActionEvent event)
+    protected void confirmEncryptionAction()
     {
         String text;
         if(!secondEncryption)
@@ -154,7 +145,7 @@ public class EducationalModeController
     }
 
     @FXML
-    protected void confirmDecryptionAction(ActionEvent event) {
+    protected void confirmDecryptionAction() {
         encryptedSecondBytes = changeRandomChar(encryptedFirstBytes);
         makeTextColorful(encryptedText, encryptedFirstBytes, encryptedSecondBytes);
 
@@ -178,14 +169,14 @@ public class EducationalModeController
     }
 
     @FXML
-    protected void changeInitializationVectorEncryptionAction(ActionEvent event)
+    protected void changeInitializationVectorEncryptionAction()
     {
         secondInitializationVectorBytes = changeRandomChar(firstInitializationVectorBytes);
         makeTextColorful(initializationVectorTextEncryption, firstInitializationVectorBytes, secondInitializationVectorBytes);
     }
 
     @FXML
-    protected void changeInitializationVectorDecryptionAction(ActionEvent event)
+    protected void changeInitializationVectorDecryptionAction()
     {
         secondInitializationVectorBytes = changeRandomChar(firstInitializationVectorBytes);
         makeTextColorful(initializationVectorTextDecryption, firstInitializationVectorBytes, secondInitializationVectorBytes);
@@ -213,11 +204,11 @@ public class EducationalModeController
         }
     }
 
-    private static String readFile(String path, Charset encoding) throws IOException
-    {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, encoding);
-    }
+//    private static String readFile(String path, Charset encoding) throws IOException
+//    {
+//        byte[] encoded = Files.readAllBytes(Paths.get(path));
+//        return new String(encoded, encoding);
+//    }
 
     private void hideForChoosingMode()
     {
@@ -248,7 +239,9 @@ public class EducationalModeController
         encryptedFlow.setVisible(true);
         confirmEncryption.setVisible(true);
         plainText.setVisible(true);
-        if(showInitializationVector)initializationVectorTextEncryption.setVisible(true);
+        if(showInitializationVector) {
+            initializationVectorTextEncryption.setVisible(true);
+        }
     }
 
     private void showDecryption()

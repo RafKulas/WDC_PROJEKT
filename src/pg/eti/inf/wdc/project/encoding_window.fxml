@@ -4,7 +4,6 @@
 <?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <GridPane alignment="CENTER" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pg.eti.inf.wdc.project.EncodingWindow">
@@ -16,8 +15,6 @@
             </toggleGroup>
         </RadioButton>
         <RadioButton fx:id="ctrMode" mnemonicParsing="false" text="CTR" toggleGroup="$cipherModesGroup" />
-        <RadioButton fx:id="cfbMode" mnemonicParsing="false" text="CFB" toggleGroup="$cipherModesGroup" />
-        <RadioButton fx:id="ofbMode" mnemonicParsing="false" text="OFB" toggleGroup="$cipherModesGroup" />
         <RadioButton fx:id="cbcMode" mnemonicParsing="false" text="CBC" toggleGroup="$cipherModesGroup" />
     </HBox>
     <HBox alignment="CENTER" prefHeight="50.0"  prefWidth="500.0" style="-fx-spacing: 10;" GridPane.columnIndex="0" GridPane.columnSpan="6" GridPane.rowIndex="1">
@@ -40,7 +37,6 @@
             <Insets bottom="10.0" />
          </VBox.margin>
         </ChoiceBox>
-        <ImageView fx:id="image" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="6" GridPane.rowIndex="2" />
         <TextArea fx:id="text" editable="false" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="6" GridPane.rowIndex="5" />
     </VBox>
     <HBox alignment="CENTER" prefHeight="50.0"  prefWidth="500.0" style="-fx-spacing: 10;" GridPane.columnIndex="0" GridPane.columnSpan="6" GridPane.rowIndex="5">

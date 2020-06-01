@@ -2,13 +2,10 @@ package pg.eti.inf.wdc.project;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
 import pg.eti.inf.wdc.project.aes.*;
-
 import java.io.*;
 
 public class EncodingWindow {
@@ -21,8 +18,6 @@ public class EncodingWindow {
 
     //RadioButtons
     public RadioButton ctrMode;
-    public RadioButton cfbMode;
-    public RadioButton ofbMode;
     public RadioButton cbcMode;
     public RadioButton ecbMode;
 
@@ -33,18 +28,16 @@ public class EncodingWindow {
     public Label chooseModeTitleLabel;
 
     //File view
-    public ImageView image;
     public TextArea text;
 
     //File
     private File toCrypt = null; // file to encrypt or decrypt
-    private File postCrypt = null;
     private File destination = null;
 
     //AES
     private AES aes;
 
-    public ChoiceBox todo;
+    public ChoiceBox<String> todo;
 
     public void swap(ActionEvent actionEvent) {
         MultiWindowFunctions.createNewWindow(this, actionEvent, "sample.fxml", new Pair<>(300, 275));
@@ -55,7 +48,6 @@ public class EncodingWindow {
         fileChooser.setTitle("Open Resource File");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Text Files", "*.txt"),
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
@@ -79,26 +71,22 @@ public class EncodingWindow {
         }
     }
 
-    /**
-     * TODO encrypting or decrypting file then view
-     */
     public void coding() {
         RadioButton selectedRadioButton = (RadioButton) cipherModesGroup.getSelectedToggle();
         String choice = selectedRadioButton.getText();
-        if(choice.equals("ECB"))
-        {
-            aes = new AES(new ECB(),"");
-            aes.SetPath(destination.getAbsolutePath());
-        }
-        else if(choice.equals("CBC"))
-        {
-            aes = new AES(new CBC(), "");
-            aes.SetPath(destination.getAbsolutePath());
-        }
-        else if(choice.equals("CTR"))
-        {
-            aes = new AES(new CTR(), "");
-            aes.SetPath(destination.getAbsolutePath());
+        switch (choice) {
+            case "ECB":
+                aes = new AES(new ECB(), "");
+                aes.SetPath(destination.getAbsolutePath());
+                break;
+            case "CBC":
+                aes = new AES(new CBC(), "");
+                aes.SetPath(destination.getAbsolutePath());
+                break;
+            case "CTR":
+                aes = new AES(new CTR(), "");
+                aes.SetPath(destination.getAbsolutePath());
+                break;
         }
         String fileDir;
         if (todo.getValue().equals("Szyfrowanie")) {
@@ -108,11 +96,13 @@ public class EncodingWindow {
         }
         else {
             fileDir = destination + aes.slash + "decrypted" + MultiWindowFunctions.getFileExtension(toCrypt);
+
             FileChooser fc = new FileChooser();
             fc.setTitle("Wybierz klucz do odszyfrowania");
             fc.getExtensionFilters().addAll(
                     new FileChooser.ExtensionFilter("Klucze (*.txt)", "*.txt"));
             File selectedFile = fc.showOpenDialog(null);
+
             File key;
             if (selectedFile != null) {
                 key = selectedFile;
@@ -130,7 +120,6 @@ public class EncodingWindow {
     private void showFile(File f) {
         String extension = MultiWindowFunctions.getFileExtension(f);
         if (MultiWindowFunctions.checkIfText(extension)) {
-
             try {
                 text.setText("");
                 FileReader fileReader = new FileReader(f);
@@ -139,28 +128,17 @@ public class EncodingWindow {
                 while((read = fileReader.read(buffer))>0) {
                     text.appendText(String.valueOf(buffer).substring(0, read));
                 }
+                text.setMinHeight(200);
+                text.setMaxHeight(500);
                 text.setVisible(true);
-                image.setVisible(false);
             } catch (FileNotFoundException e) {
                 MultiWindowFunctions.showAlert("FILE NOT FOUND!", "Looks like file does not exist or was deleted...");
             } catch (IOException e) {
                 MultiWindowFunctions.showAlert("Problem with reading file!", "File is corrupted...");
             }
         }
-        else if (MultiWindowFunctions.checkIfImage(extension)) {
-            try {
-                Image imageToView = new Image(f.toURI().toURL().toExternalForm());
-                image.setImage(imageToView);
-                image.setFitHeight(200.0);
-                image.setFitWidth(500.0);
-                image.setVisible(true);
-                text.setVisible(false);
-            } catch (IOException e) {
-                MultiWindowFunctions.showAlert("Problem with reading file!", "File is corrupted...");
-            }
-        }
         else {
-            image.setVisible(false);
+            text.setMaxHeight(0);
             text.setVisible(false);
             System.out.println("Gonna implement it later");
         }
