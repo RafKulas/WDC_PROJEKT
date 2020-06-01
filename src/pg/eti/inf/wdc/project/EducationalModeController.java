@@ -19,12 +19,15 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import pg.eti.inf.wdc.project.aes.AES;
+import pg.eti.inf.wdc.project.aes.CBC;
+import pg.eti.inf.wdc.project.aes.CTR;
 import pg.eti.inf.wdc.project.aes.ECB;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Random;
 
 public class EducationalModeController
 {
@@ -33,6 +36,7 @@ public class EducationalModeController
     public Button confirmEncryption;
     public Button confirmDecryption;
     public Button back;
+    public Button changeInitializationVector;
 
     //radio buttons
     public RadioButton ecbMode;
@@ -44,8 +48,8 @@ public class EducationalModeController
 
     //text fields
     public TextArea plainText;
-    public TextArea encryptedText;
-    public TextArea initializationVectorText;
+    public TextFlow encryptedText;
+    public TextFlow initializationVectorText;
 
     //colorful labels
     public TextFlow encryptedFlow;
@@ -65,15 +69,15 @@ public class EducationalModeController
     private String key;
     private String decryptedMessage;
     private boolean secondEncryption;
-    private boolean secondDecryption;
     private String firstPlainText, secondPlainText;
+    private boolean showInitializationVector;
+    private String firstInitializationVector, secondInitializationVector;
 
     public void initialize()
     {
         hideForChoosingMode();
         ecbMode.setSelected(true);
         secondEncryption = false;
-        secondDecryption = false;
     }
 
     @FXML
@@ -88,8 +92,21 @@ public class EducationalModeController
         RadioButton selectedRadioButton = (RadioButton) cipherModesGroup.getSelectedToggle();
         String choice = selectedRadioButton.getText();
         if(choice.equals("ECB"))
-            showEncrytpion(false);
+        {
+            showInitializationVector = false;
             aes = new AES(new ECB(),"./path");
+        }
+        else if(choice.equals("CBC"))
+        {
+            showInitializationVector = true;
+            aes = new AES(new CBC(), "./path");
+        }
+        else if(choice.equals("CTR"))
+        {
+            showInitializationVector = true;
+            aes = new AES(new CTR(), "./path");
+        }
+        showEncrytpion();
     }
 
     @FXML
@@ -106,7 +123,19 @@ public class EducationalModeController
             try
             {
                 aes.encrypt(firstPlainText);
-                encryptedFirstMessage = readFile("./path/encrypted.txt", ISO_8859_1);
+                if(!showInitializationVector)
+                {
+                    encryptedFirstMessage = readFile("./path/encrypted.txt", ISO_8859_1);
+                }
+                else
+                {
+                    String help =  readFile("./path/encrypted.txt", ISO_8859_1);
+                    firstInitializationVector = help.substring(0,16);
+                    secondInitializationVector = firstInitializationVector;
+                    encryptedFirstMessage = help.substring(16, help.length());
+                    makeTextColorful(initializationVectorText, firstInitializationVector, secondInitializationVector);
+                    changeInitializationVector.setVisible(true);
+                }
                 key = readFile("./path/key.txt", ISO_8859_1);
                 encryptedSecondMessage = encryptedFirstMessage;
                 secondEncryption = true;
@@ -128,7 +157,13 @@ public class EducationalModeController
             try
             {
                 aes.encrypt(text, key);
-                encryptedSecondMessage = readFile("./path/encrypted.txt", ISO_8859_1);
+                if(!showInitializationVector) encryptedSecondMessage = readFile("./path/encrypted.txt", ISO_8859_1);
+                else
+                {
+                    String help =  readFile("./path/encrypted.txt", ISO_8859_1);
+                    secondInitializationVector = help.substring(0,16);
+                    encryptedSecondMessage = help.substring(16, help.length());
+                }
                 makeTextColorful(encryptedFlow, encryptedFirstMessage, encryptedSecondMessage);
                 showDecryption();
             }
@@ -140,11 +175,11 @@ public class EducationalModeController
     }
 
     @FXML
-    protected void confirmDecryptionAction(ActionEvent event)
-    {
-        byte[] bytes = encryptedText.getText().getBytes(ISO_8859_1);
-        encryptedSecondMessage = new String(bytes, ISO_8859_1);
-        aes.decrypt(encryptedSecondMessage, key);
+    protected void confirmDecryptionAction(ActionEvent event) {
+        encryptedSecondMessage = changeRandomChar(encryptedFirstMessage);
+        makeTextColorful(encryptedText, encryptedFirstMessage, encryptedSecondMessage);
+        if(!showInitializationVector) aes.decrypt(encryptedSecondMessage, key);
+        else aes.decrypt(firstInitializationVector.concat(encryptedSecondMessage), key);
         try
         {
             secondPlainText = readFile("./path/decrypted.txt", ISO_8859_1);
@@ -154,6 +189,13 @@ public class EducationalModeController
             e.printStackTrace();
         }
         makeTextColorful(decryptedFlow, firstPlainText, secondPlainText);
+    }
+
+    @FXML
+    protected void changeInitializationVectorAction(ActionEvent event)
+    {
+        secondInitializationVector = changeRandomChar(firstInitializationVector);
+        makeTextColorful(initializationVectorText, firstInitializationVector, secondInitializationVector);
     }
 
     private void makeTextColorful(TextFlow flow, String first, String second)
@@ -188,6 +230,7 @@ public class EducationalModeController
     {
         confirmEncryption.setVisible(false);
         confirmDecryption.setVisible(false);
+        changeInitializationVector.setVisible(false);
 
         plainText.setVisible(false);
         encryptedText.setVisible(false);
@@ -203,7 +246,7 @@ public class EducationalModeController
         decryptionTitleLabel.setVisible(false);
     }
 
-    private void showEncrytpion(boolean showInitializationVector)
+    private void showEncrytpion()
     {
         encryptionTitleLabel.setVisible(true);
         lineBetweenChoosingAndEncryption.setVisible(true);
@@ -221,23 +264,32 @@ public class EducationalModeController
         confirmDecryption.setVisible(true);
         encryptedText.setVisible(true);
 
-//        TextFormatter<String> formatter = new TextFormatter<String>( change -> {
-//            return change;
-//        });
-//        encryptedText.setTextFormatter(formatter);
-
-
-        encryptedText.setText(encryptedFirstMessage);
-        aes.decrypt(encryptedFirstMessage, key);
+        encryptedSecondMessage = encryptedFirstMessage;
+        makeTextColorful(encryptedText, encryptedFirstMessage, encryptedSecondMessage);
+        if(!showInitializationVector) aes.decrypt(encryptedFirstMessage, key);
+        else aes.decrypt(firstInitializationVector.concat(encryptedFirstMessage), key);
         try
         {
-            secondPlainText = readFile("./path/decrypted.txt", ISO_8859_1);
+            firstPlainText = readFile("./path/decrypted.txt", ISO_8859_1);
+            secondPlainText = firstPlainText;
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
         makeTextColorful(decryptedFlow, firstPlainText, secondPlainText);
-
     }
+
+    private String changeRandomChar(String text)
+    {
+        String help = text;
+        Random random = new Random();
+        int randomIndex = random.nextInt(text.length());
+        char[] helpChars = help.toCharArray();
+        int randomAdd = random.nextInt(10)+1;
+        helpChars[randomIndex] += randomAdd;
+        help = String.valueOf(helpChars);
+        return help;
+    }
+
 }
