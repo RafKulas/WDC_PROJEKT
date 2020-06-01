@@ -18,8 +18,8 @@ public class EncodingWindow {
     public Button doAction;
     public Button pathChooser;
     public Label pathInfo;
-    private File toCrypt; // file to encrypt or decrypt
-    private File destination;
+    private File toCrypt = null; // file to encrypt or decrypt
+    private File destination = null;
 
     public void swap(ActionEvent actionEvent) {
         MultiWindowFunctions.createNewWindow(this, actionEvent, "sample.fxml", new Pair<>(300, 275));
@@ -35,8 +35,22 @@ public class EncodingWindow {
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
             fileInfo.setText(selectedFile.getName());
-            doAction.setDisable(false);
             toCrypt = selectedFile;
+            if (destination!=null) {
+                doAction.setDisable(false);
+            }
+        }
+    }
+
+    public void choosePath() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDir = directoryChooser.showDialog(null);
+        if (selectedDir != null) {
+            pathInfo.setText(selectedDir.getName());
+            destination = selectedDir;
+            if (toCrypt!=null) {
+                doAction.setDisable(false);
+            }
         }
     }
 
@@ -81,13 +95,4 @@ public class EncodingWindow {
         }
     }
 
-    public void choosePath() {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        File selectedDir = directoryChooser.showDialog(null);
-        if (selectedDir != null) {
-            pathInfo.setText(selectedDir.getName());
-            doAction.setDisable(false);
-            destination = selectedDir;
-        }
-    }
 }
