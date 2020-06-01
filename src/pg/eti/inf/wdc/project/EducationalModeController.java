@@ -41,8 +41,6 @@ public class EducationalModeController
     public RadioButton ecbMode;
     public RadioButton cbcMode;
     public RadioButton ctrMode;
-    public RadioButton cfbMode;
-    public RadioButton ofbMode;
     public ToggleGroup cipherModesGroup;
 
     //text fields
