@@ -9,8 +9,8 @@ public class main
         String path = "C:\\Users\\janja\\Desktop";
         AES aes = new AES(new CTR(),path);
 
-        //aes.encrypt(new File(path + "\\1234.png"));
-        //aes.decrypt(new File(path + "\\encrypted.txt"),new File(path + "\\key.txt"));
+        aes.encrypt(new File(path + "\\1234.png"));
+        aes.decrypt(new File(path + "\\encrypted.png"),new File(path + "\\key.txt"));
 
         aes.encrypt("qwertyxd");
         String text = new String(Files.readAllBytes(Paths.get("C:\\Users\\janja\\Desktop\\encrypted.txt")),"ISO-8859-1");
