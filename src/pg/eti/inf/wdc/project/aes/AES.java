@@ -42,7 +42,7 @@ public class AES implements IAES
     {
         try
         {
-            byte encrypted[] = cipher_mode_.encrypt(data.getBytes("ISO-8859-1"), key.getBytes("ISO-8859-1"));
+            byte encrypted[] = cipher_mode_.encrypt(data.getBytes("ISO-8859-1"), key.getBytes("ISO-8859-1"), null);
 
             File file = new File(path_ + "\\encrypted.txt");
             file.createNewFile();
@@ -55,7 +55,7 @@ public class AES implements IAES
     {
         try
         {
-            byte encrypted[] = cipher_mode_.encrypt(data.getBytes(), new FileInputStream(file_key).readAllBytes());
+            byte encrypted[] = cipher_mode_.encrypt(data.getBytes(), new FileInputStream(file_key).readAllBytes(),null);
 
             File file = new File(path_ + "\\encrypted.txt");
             file.createNewFile();
@@ -75,11 +75,9 @@ public class AES implements IAES
             FileOutputStream out = new FileOutputStream(path_ + "\\key.txt");
             out.write(data_array[0]);
 
-            String ext = file_data.getName();
-            ext = ext.substring(ext.lastIndexOf('.'));
-            file = new File(path_ + "\\encrypted" +  ext);
+            file = new File(path_ + "\\encrypted.txt");
             file.createNewFile();
-            out = new FileOutputStream(path_ + "\\encrypted" +  ext);
+            out = new FileOutputStream(path_ + "\\encrypted.txt");
             out.write(data_array[1]);
         } catch(Exception ex){System.out.println(ex);}
     }
@@ -88,13 +86,11 @@ public class AES implements IAES
     {
         try
         {
-            byte encrypted[] = cipher_mode_.encrypt( new FileInputStream(file_data).readAllBytes(), key.getBytes());
+            byte encrypted[] = cipher_mode_.encrypt( new FileInputStream(file_data).readAllBytes(), key.getBytes(),null);
 
-            String ext = file_data.getName();
-            ext = ext.substring(ext.lastIndexOf('.'));
-            File file = new File(path_ + "\\encrypted" +  ext);
+            File file = new File(path_ + "\\encrypted.txt");
             file.createNewFile();
-            FileOutputStream out = new FileOutputStream(path_ + "\\encrypted" +  ext);
+            FileOutputStream out = new FileOutputStream(path_ + "\\encrypted.txt");
             out.write(encrypted);
         } catch(Exception ex){System.out.println(ex);}
     }
@@ -103,13 +99,11 @@ public class AES implements IAES
     {
         try
         {
-            byte encrypted[] = cipher_mode_.encrypt( new FileInputStream(file_data).readAllBytes(),  new FileInputStream(file_key).readAllBytes());
+            byte encrypted[] = cipher_mode_.encrypt( new FileInputStream(file_data).readAllBytes(),  new FileInputStream(file_key).readAllBytes(),null);
 
-            String ext = file_data.getName();
-            ext = ext.substring(ext.lastIndexOf('.'));
-            File file = new File(path_ + "\\encrypted" +  ext);
+            File file = new File(path_ + "\\encrypted.txt");
             file.createNewFile();
-            FileOutputStream out = new FileOutputStream(path_ + "\\encrypted" +  ext);
+            FileOutputStream out = new FileOutputStream(path_ + "\\encrypted.txt");
             out.write(encrypted);
         } catch(Exception ex){System.out.println(ex);}
     }
@@ -119,7 +113,6 @@ public class AES implements IAES
         try
         {
             byte decrypted[] = cipher_mode_.decrypt(data.getBytes("ISO-8859-1"),key.getBytes("ISO-8859-1"));
-
 
             File file = new File(path_ + "\\decrypted.txt");
             file.createNewFile();
@@ -147,11 +140,9 @@ public class AES implements IAES
         {
             byte decrypted[] = cipher_mode_.decrypt( new FileInputStream(file_data).readAllBytes(), key.getBytes("ISO-8859-1"));
 
-            String ext = file_data.getName();
-            ext = ext.substring(ext.lastIndexOf('.'));
-            File file = new File(path_ + "\\decrypted" +  ext);
+            File file = new File(path_ + "\\decrypted.txt");
             file.createNewFile();
-            FileOutputStream out = new FileOutputStream(path_ + "\\decrypted" +  ext);
+            FileOutputStream out = new FileOutputStream(path_ + "\\decrypted.txt");
             out.write(decrypted);
         } catch(Exception ex){System.out.println(ex);}
     }
@@ -162,11 +153,9 @@ public class AES implements IAES
         {
             byte decrypted[] = cipher_mode_.decrypt( new FileInputStream(file_data).readAllBytes(), new FileInputStream(file_key).readAllBytes());
 
-            String ext = file_data.getName();
-            ext = ext.substring(ext.lastIndexOf('.'));
-            File file = new File(path_ + "\\decrypted" +  ext);
+            File file = new File(path_ + "\\decrypted.txt");
             file.createNewFile();
-            FileOutputStream out = new FileOutputStream(path_ + "\\decrypted" +  ext);
+            FileOutputStream out = new FileOutputStream(path_ + "\\decrypted.txt");
             out.write(decrypted);
         } catch(Exception ex){System.out.println(ex);}
     }
