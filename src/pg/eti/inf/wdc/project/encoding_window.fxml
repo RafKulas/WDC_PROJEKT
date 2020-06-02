@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.net.URL?>
+<GridPane alignment="CENTER" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pg.eti.inf.wdc.project.EncodingWindow">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+    <HBox alignment="CENTER" prefHeight="50.0"  prefWidth="500.0" style="-fx-spacing: 10;" GridPane.columnIndex="0" GridPane.columnSpan="6" GridPane.rowIndex="0">
+        <Label fx:id="chooseModeTitleLabel" text="Wybierz tryb szyfrowania: " />
+        <RadioButton fx:id="ecbMode" mnemonicParsing="false" selected="true" text="ECB">
+            <toggleGroup>
+                <ToggleGroup fx:id="cipherModesGroup" />
+            </toggleGroup>
+        </RadioButton>
+        <RadioButton fx:id="ctrMode" mnemonicParsing="false" text="CTR" toggleGroup="$cipherModesGroup" />
+        <RadioButton fx:id="cbcMode" mnemonicParsing="false" text="CBC" toggleGroup="$cipherModesGroup" />
+        <RadioButton fx:id="ofbMode" mnemonicParsing="false" text="OFB" toggleGroup="$cipherModesGroup" />
+        <RadioButton fx:id="cfbMode" mnemonicParsing="false" text="CFB" toggleGroup="$cipherModesGroup" />
+    </HBox>
+    <HBox alignment="CENTER" prefHeight="50.0"  prefWidth="500.0" style="-fx-spacing: 10;" GridPane.columnIndex="0" GridPane.columnSpan="6" GridPane.rowIndex="1">
+        <Button fx:id="fileChooser" onAction="#chooseFile" text="Wybierz plik" GridPane.columnIndex="0" GridPane.columnSpan="3" />
+        <Label fx:id="fileInfo" text="Nie wybrano pliku" GridPane.columnIndex="1" GridPane.columnSpan="3" />
+    </HBox>
+    <HBox alignment="CENTER" prefHeight="50.0"  prefWidth="500.0" style="-fx-spacing: 10;" GridPane.columnIndex="0" GridPane.columnSpan="6" GridPane.rowIndex="2">
+        <Button fx:id="pathChooser" onAction="#choosePath" text="Wybierz ścieżkę" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="0" />
+        <Label fx:id="pathInfo" text="Nie wybrano miejsca zapisu" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="0" />
+    </HBox>
+    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="500.0" style="-fx-spacing: 10;" GridPane.columnIndex="0" GridPane.columnSpan="6" GridPane.rowIndex="3">
+        <ChoiceBox fx:id="todo" value="Szyfrowanie">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                   <String fx:value="Szyfrowanie" />
+                   <String fx:value="Deszyfrowanie" />
+                </FXCollections>
+            </items>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+        </ChoiceBox>
+        <TextArea fx:id="text" editable="false" visible="false" GridPane.columnIndex="0" GridPane.columnSpan="6" GridPane.rowIndex="5" />
+    </VBox>
+    <HBox alignment="CENTER" prefHeight="50.0"  prefWidth="500.0" style="-fx-spacing: 10;" GridPane.columnIndex="0" GridPane.columnSpan="6" GridPane.rowIndex="5">
+        <Button onAction="#swap" text="Back" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+        <Button fx:id="doAction" disable="true" onAction="#coding" text="OK" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+    </HBox>
+</GridPane>
