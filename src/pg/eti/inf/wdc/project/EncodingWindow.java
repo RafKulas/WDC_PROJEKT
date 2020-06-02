@@ -20,7 +20,8 @@ public class EncodingWindow {
     public RadioButton ctrMode;
     public RadioButton cbcMode;
     public RadioButton ecbMode;
-
+    public RadioButton ofbMode;
+    public RadioButton cfbMode;
 
     //Labels
     public Label fileInfo;
@@ -77,17 +78,21 @@ public class EncodingWindow {
         switch (choice) {
             case "ECB":
                 aes = new AES(new ECB(), "");
-                aes.SetPath(destination.getAbsolutePath());
                 break;
             case "CBC":
                 aes = new AES(new CBC(), "");
-                aes.SetPath(destination.getAbsolutePath());
                 break;
             case "CTR":
                 aes = new AES(new CTR(), "");
-                aes.SetPath(destination.getAbsolutePath());
+                break;
+            case "OFB":
+                aes = new AES(new OFB(), "");
+                break;
+            case "CFB":
+                aes = new AES(new CFB(), "");
                 break;
         }
+        aes.SetPath(destination.getAbsolutePath());
         String fileDir;
         if (todo.getValue().equals("Szyfrowanie")) {
             fileDir = destination + aes.slash + "encrypted" + MultiWindowFunctions.getFileExtension(toCrypt);

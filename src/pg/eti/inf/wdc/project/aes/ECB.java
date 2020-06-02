@@ -10,11 +10,8 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
-public class ECB implements AbstractCipherMode
+public class ECB extends AESModes
 {
-
-    String padding_;
-
     public ECB()
     {
         this.padding_ = "AES/ECB/PKCS5Padding";

@@ -20,6 +20,8 @@
         </RadioButton>
         <RadioButton fx:id="ctrMode" mnemonicParsing="false" text="CTR" toggleGroup="$cipherModesGroup" />
         <RadioButton fx:id="cbcMode" mnemonicParsing="false" text="CBC" toggleGroup="$cipherModesGroup" />
+        <RadioButton fx:id="ofbMode" mnemonicParsing="false" text="OFB" toggleGroup="$cipherModesGroup" />
+        <RadioButton fx:id="cfbMode" mnemonicParsing="false" text="CFB" toggleGroup="$cipherModesGroup" />
     </HBox>
     <HBox alignment="CENTER" prefHeight="50.0"  prefWidth="500.0" style="-fx-spacing: 10;" GridPane.columnIndex="0" GridPane.columnSpan="6" GridPane.rowIndex="1">
         <Button fx:id="fileChooser" onAction="#chooseFile" text="Wybierz plik" GridPane.columnIndex="0" GridPane.columnSpan="3" />
