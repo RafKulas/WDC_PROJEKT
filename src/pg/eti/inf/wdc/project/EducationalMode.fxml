@@ -1,51 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-      prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="pg.eti.inf.wdc.project.EducationalModeController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pg.eti.inf.wdc.project.EducationalModeController">
+   <stylesheets>
+      <URL value="@style.css" />
+   </stylesheets>
    <AnchorPane prefHeight="108.0" prefWidth="600.0">
-      <Label fx:id="chooseModeTitleLabel" layoutX="233.0" layoutY="31.0" text="Wybierz tryb szyfrowania"/>
-      <RadioButton fx:id="ecbMode" layoutX="190.0" layoutY="64.0" mnemonicParsing="false" text="ECB">
+      <Label fx:id="chooseModeTitleLabel" layoutX="233.0" layoutY="31.0" text="Wybierz tryb szyfrowania" />
+      <RadioButton fx:id="ecbMode" layoutX="95.0" layoutY="64.0" mnemonicParsing="false" text="ECB">
          <toggleGroup>
-            <ToggleGroup fx:id="cipherModesGroup"/>
+            <ToggleGroup fx:id="cipherModesGroup" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton fx:id="ctrMode" layoutX="366.0" layoutY="64.0" mnemonicParsing="false" text="CTR"
-                   toggleGroup="$cipherModesGroup"/>
-      <RadioButton fx:id="cbcMode" layoutX="277.0" layoutY="64.0" mnemonicParsing="false" text="CBC"
-                   toggleGroup="$cipherModesGroup"/>
-      <Line fx:id="lineBetweenChoosingAndEncryption" endX="265.0" endY="2.0" layoutX="305.0" layoutY="98.0"
-            startX="-275.0" startY="2.0"/>
-      <Button fx:id="confirmModeChoice" layoutX="483.0" layoutY="60.0" mnemonicParsing="false"
-              onAction="#confirmModeChoiceAction" text="Zatwierdź"/>
-      <Button fx:id="back" layoutX="30.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToMenu" text="Wróć"/>
+      <RadioButton fx:id="ctrMode" layoutX="245.0" layoutY="64.0" mnemonicParsing="false" text="CTR" toggleGroup="$cipherModesGroup" />
+      <RadioButton fx:id="cbcMode" layoutX="171.0" layoutY="64.0" mnemonicParsing="false" text="CBC" toggleGroup="$cipherModesGroup" />
+      <Line fx:id="lineBetweenChoosingAndEncryption" endX="265.0" endY="2.0" layoutX="305.0" layoutY="98.0" startX="-275.0" startY="2.0" />
+      <Button fx:id="confirmModeChoice" layoutX="483.0" layoutY="60.0" mnemonicParsing="false" onAction="#confirmModeChoiceAction" text="Zatwierdź" />
+      <Button fx:id="back" layoutX="30.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToMenu" text="Wróć" />
+      <RadioButton fx:id="cfbMode" layoutX="323.0" layoutY="64.0" mnemonicParsing="false" text="CFB" toggleGroup="$cipherModesGroup"/>
+      <RadioButton fx:id="ofbMode" layoutX="403.0" layoutY="64.0" mnemonicParsing="false" text="OFB" toggleGroup="$cipherModesGroup"/>
    </AnchorPane>
    <AnchorPane prefHeight="38.0" prefWidth="600.0">
-      <Line fx:id="lineBetweenEncryptionAndDecryption" endX="265.0" layoutX="305.0" layoutY="151.0" startX="-275.0"/>
-      <Label fx:id="encryptionTitleLabel" layoutX="268.0" layoutY="5.0" text="Szyfrowanie"/>
-      <Button fx:id="confirmEncryption" layoutX="483.0" layoutY="115.0" mnemonicParsing="false"
-              onAction="#confirmEncryptionAction" text="Zatwierdź"/>
-      <TextFlow fx:id="encryptedFlow" layoutX="30.0" layoutY="93.0" prefHeight="44.0" prefWidth="424.0"/>
-      <TextArea fx:id="plainText" layoutX="30.0" layoutY="13.0" prefHeight="44.0" prefWidth="223.0"/>
-      <TextFlow fx:id="initializationVectorTextEncryption" layoutX="348.0" layoutY="10.0" prefHeight="44.0"
-                prefWidth="223.0"/>
-      <Button fx:id="changeInitializationVectorEncryption" layoutX="473.0" layoutY="80.0" mnemonicParsing="false"
-              onAction="#changeInitializationVectorEncryptionAction" text="Zmień wektor"/>
+      <Line fx:id="lineBetweenEncryptionAndDecryption" endX="265.0" layoutX="305.0" layoutY="151.0" startX="-275.0" />
+      <Label fx:id="encryptionTitleLabel" layoutX="268.0" layoutY="5.0" text="Szyfrowanie" />
+      <Button fx:id="confirmEncryption" layoutX="483.0" layoutY="115.0" mnemonicParsing="false" onAction="#confirmEncryptionAction" text="Zatwierdź" />
+      <TextFlow fx:id="encryptedFlow" layoutX="30.0" layoutY="93.0" prefHeight="44.0" prefWidth="424.0" />
+      <TextArea fx:id="plainText" layoutX="30.0" layoutY="13.0" prefHeight="44.0" prefWidth="223.0" />
+      <TextFlow fx:id="initializationVectorTextEncryption" layoutX="348.0" layoutY="10.0" prefHeight="44.0" prefWidth="223.0" />
+      <Button fx:id="changeInitializationVectorEncryption" layoutX="473.0" layoutY="80.0" mnemonicParsing="false" onAction="#changeInitializationVectorEncryptionAction" text="Zmień wektor" />
    </AnchorPane>
    <AnchorPane prefHeight="157.0" prefWidth="600.0">
-      <Label fx:id="decryptionTitleLabel" layoutX="262.0" layoutY="5.0" text="Deszyfrowanie"/>
-      <TextFlow fx:id="decryptedFlow" layoutX="32.0" layoutY="81.0" prefHeight="51.0" prefWidth="433.0"/>
-      <TextFlow fx:id="encryptedText" layoutX="32.0" layoutY="12.0" prefHeight="51.0" prefWidth="223.0"/>
-      <Button fx:id="confirmDecryption" layoutX="466.0" layoutY="107.0" mnemonicParsing="false"
-              onAction="#confirmDecryptionAction" text="Zmień szyfrogram"/>
-      <TextFlow fx:id="initializationVectorTextDecryption" layoutX="355.0" layoutY="10.0" prefHeight="51.0"
-                prefWidth="216.0"/>
-      <Button fx:id="changeInitializationVectorDecryption" layoutX="478.0" layoutY="68.0" mnemonicParsing="false"
-              onAction="#changeInitializationVectorDecryptionAction" text="Zmień wektor"/>
+      <Label fx:id="decryptionTitleLabel" layoutX="262.0" layoutY="5.0" text="Deszyfrowanie" />
+      <TextFlow fx:id="decryptedFlow" layoutX="32.0" layoutY="81.0" prefHeight="51.0" prefWidth="433.0" />
+      <TextFlow fx:id="encryptedText" layoutX="32.0" layoutY="12.0" prefHeight="51.0" prefWidth="223.0" />
+      <Button fx:id="confirmDecryption" layoutX="466.0" layoutY="107.0" mnemonicParsing="false" onAction="#confirmDecryptionAction" text="Zmień szyfrogram" />
+      <TextFlow fx:id="initializationVectorTextDecryption" layoutX="355.0" layoutY="10.0" prefHeight="51.0" prefWidth="216.0" />
+      <Button fx:id="changeInitializationVectorDecryption" layoutX="478.0" layoutY="68.0" mnemonicParsing="false" onAction="#changeInitializationVectorDecryptionAction" text="Zmień wektor" />
    </AnchorPane>
 </VBox>

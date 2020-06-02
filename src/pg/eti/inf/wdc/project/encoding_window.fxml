@@ -6,7 +6,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import java.net.URL?>
 <GridPane alignment="CENTER" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pg.eti.inf.wdc.project.EncodingWindow">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
     <HBox alignment="CENTER" prefHeight="50.0"  prefWidth="500.0" style="-fx-spacing: 10;" GridPane.columnIndex="0" GridPane.columnSpan="6" GridPane.rowIndex="0">
         <Label fx:id="chooseModeTitleLabel" text="Wybierz tryb szyfrowania: " />
         <RadioButton fx:id="ecbMode" mnemonicParsing="false" selected="true" text="ECB">

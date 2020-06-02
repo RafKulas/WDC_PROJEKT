@@ -33,6 +33,8 @@ public class EducationalModeController
     public RadioButton ecbMode;
     public RadioButton cbcMode;
     public RadioButton ctrMode;
+    public RadioButton cfbMode;
+    public RadioButton ofbMode;
     public ToggleGroup cipherModesGroup;
 
     //text fields
@@ -81,7 +83,8 @@ public class EducationalModeController
     {
         RadioButton selectedRadioButton = (RadioButton) cipherModesGroup.getSelectedToggle();
         String choice = selectedRadioButton.getText();
-        switch (choice) {
+        switch (choice)
+        {
             case "ECB":
                 showInitializationVector = false;
                 aes = new ECB(false);
@@ -93,6 +96,14 @@ public class EducationalModeController
             case "CTR":
                 showInitializationVector = true;
                 aes = new CTR(false);
+                break;
+            case "CFB":
+                showInitializationVector = true;
+                aes = new CFB(false);
+                break;
+            case "OFB":
+                showInitializationVector = true;
+                aes = new OFB(false);
                 break;
         }
         disableChoosingMode();
