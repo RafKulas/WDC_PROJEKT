@@ -26,6 +26,6 @@ public class Controller {
 
     @FXML
     protected void educationalMode(ActionEvent event) {
-        createNewWindow(this, event, "EducationalMode.fxml", new Pair<>(600,400));
+        createNewWindow(this, event, "EducationalMode.fxml", new Pair<>(600,450));
     }
 }

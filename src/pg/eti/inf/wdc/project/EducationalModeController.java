@@ -25,6 +25,7 @@ public class EducationalModeController
     public Button confirmModeChoice;
     public Button confirmEncryption;
     public Button confirmDecryption;
+    public Button changeEncryptedText;
     public Button back;
     public Button changeInitializationVectorEncryption;
     public Button changeInitializationVectorDecryption;
@@ -156,13 +157,11 @@ public class EducationalModeController
     }
 
     @FXML
-    protected void confirmDecryptionAction() {
-        encryptedSecondBytes = changeRandomChar(encryptedFirstBytes);
-        makeTextColorful(encryptedText, encryptedFirstBytes, encryptedSecondBytes);
-
+    protected void confirmDecryptionAction()
+    {
         if(showInitializationVector)
         {
-            byte[] wholeMessage = concat(firstInitializationVectorBytes, encryptedSecondBytes);
+            byte[] wholeMessage = concat(secondInitializationVectorBytes, encryptedSecondBytes);
             secondPlainTextBytes = aes.decrypt(wholeMessage, keyBytes);
         }
         else secondPlainTextBytes = aes.decrypt(encryptedSecondBytes, keyBytes);
@@ -193,33 +192,29 @@ public class EducationalModeController
         makeTextColorful(initializationVectorTextDecryption, firstInitializationVectorBytes, secondInitializationVectorBytes);
     }
 
-    private void makeTextColorful(TextFlow flow, byte[] first, byte[] second)
+    @FXML
+    protected void changeEncryptedTextAction()
     {
+        encryptedSecondBytes = changeRandomChar(encryptedFirstBytes);
+        makeTextColorful(encryptedText, encryptedFirstBytes, encryptedSecondBytes);
+    }
+
+    private void makeTextColorful(TextFlow flow, byte[] first, byte[] second) {
         flow.getChildren().clear();
-        for(int i=0;i<first.length;i++)
-        {
+        for (int i = 0; i < first.length; i++) {
             byte firstChar = first[i];
             byte secondChar = second[i];
             Text text = new Text();
-            if(firstChar != secondChar)
-            {
-                text.setText(String.valueOf((char)(secondChar)));
+            if (firstChar != secondChar) {
+                text.setText(String.valueOf((char) (secondChar)));
                 text.setFill(Color.RED);
-            }
-            else
-            {
-                text.setText(String.valueOf((char)(secondChar)));
+            } else {
+                text.setText(String.valueOf((char) (secondChar)));
                 text.setFill(Color.GREEN);
             }
             flow.getChildren().add(text);
         }
     }
-
-//    private static String readFile(String path, Charset encoding) throws IOException
-//    {
-//        byte[] encoded = Files.readAllBytes(Paths.get(path));
-//        return new String(encoded, encoding);
-//    }
 
     private void hideForChoosingMode()
     {
@@ -227,6 +222,7 @@ public class EducationalModeController
         confirmDecryption.setVisible(false);
         changeInitializationVectorEncryption.setVisible(false);
         changeInitializationVectorDecryption.setVisible(false);
+        changeEncryptedText.setVisible(false);
 
         plainText.setVisible(false);
         encryptedText.setVisible(false);
@@ -262,6 +258,7 @@ public class EducationalModeController
         decryptedFlow.setVisible(true);
         confirmDecryption.setVisible(true);
         encryptedText.setVisible(true);
+        changeEncryptedText.setVisible(true);
 
         encryptedSecondBytes = encryptedFirstBytes;
         makeTextColorful(encryptedText, encryptedFirstBytes, encryptedSecondBytes);
@@ -307,6 +304,7 @@ public class EducationalModeController
     {
         changeInitializationVectorDecryption.setDisable(true);
         confirmDecryption.setDisable(true);
+        changeEncryptedText.setDisable(true);
     }
 
     private String normalizeText(String text)
