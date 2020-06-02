@@ -96,7 +96,6 @@ public class EncodingWindow {
         String fileDir;
         if (todo.getValue().equals("Szyfrowanie")) {
             fileDir = destination + aes.slash + "encrypted" + MultiWindowFunctions.getFileExtension(toCrypt);
-            System.out.println(fileDir);
             aes.encrypt(toCrypt);
         }
         else {
@@ -145,7 +144,6 @@ public class EncodingWindow {
         else {
             text.setMaxHeight(0);
             text.setVisible(false);
-            System.out.println("Gonna implement it later");
         }
     }
 
