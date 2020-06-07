@@ -28,7 +28,7 @@ public abstract class AESModes implements AbstractCipherMode {
             KeyGenerator key_generator = KeyGenerator.getInstance("AES");
             SecretKey secret_key = key_generator.generateKey();
 
-            Cipher cipher = Cipher.getInstance(padding_);
+            Cipher cipher = Cipher.getInstance(padding_); // zle nazwany tryb
             cipher.init(Cipher.ENCRYPT_MODE, secret_key, ivspec);
 
             byte[] encoded = cipher.doFinal(data);
