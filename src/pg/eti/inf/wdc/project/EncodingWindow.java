@@ -124,7 +124,7 @@ public class EncodingWindow {
     private void showFile(File f) {
         String extension = MultiWindowFunctions.getFileExtension(f);
         if (MultiWindowFunctions.checkIfText(extension)) {
-            try (FileReader fileReader = new FileReader(f);) {
+            try (FileReader fileReader = new FileReader(f)) {
                 text.setText("");
                 char[] buffer = new char[80];
                 int read;
